@@ -17,7 +17,7 @@ const PRICE_ID = 'price_1U9uhrFv2iaRvQLl1iOr7hGl'
  * Requires STRIPE_SECRET_KEY in the environment. That key is never
  * committed to the repo; it lives only in Vercel project env vars.
  */
-export async function GET(req) {
+export async function GET(req: Request): Promise<NextResponse> {
   const secretKey = process.env.STRIPE_SECRET_KEY
   if (!secretKey) {
     return NextResponse.json({ ok: false, error: 'not_configured' }, { status: 503 })
@@ -43,7 +43,7 @@ export async function GET(req) {
       body: params.toString(),
     })
 
-    const data = await res.json()
+    const data = (await res.json()) as { url?: string }
 
     if (!res.ok || !data.url) {
       return NextResponse.json({ ok: false, error: 'stripe_error' }, { status: 502 })
