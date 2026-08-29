@@ -1,4 +1,4 @@
-# Create Media Group — Website
+# Create Church Media — Website
 
 Next.js 16 marketing site for Create Media Group (Emily Farmer). Unlimited graphic design for pastors and churches.
 
