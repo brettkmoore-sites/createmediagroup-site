@@ -32,7 +32,7 @@ contact-block inline form, dedicated /contact form) were removed. Global state
 lives in `WaitListProvider` (React context, wrapping the app in the root layout);
 every button passes a `source` string so signups are attributed to the exact CTA.
 Submissions POST to `/api/wait-list`, which fans out to a Google Sheet (Apps
-Script webhook), GHL, and an email to Emily. See
+Script webhook) and an email to Emily. See
 `_handoff/google-sheets-waitlist-setup-2026-06-15.md`.
 
 ## Marker fill implementation

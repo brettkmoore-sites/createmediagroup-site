@@ -15,10 +15,9 @@ type Payload = {
   church?: string
   location?: string
   message?: string
-  // Where the signup came from (e.g. the footer quick-capture) and an optional
-  // campaign tag, used to label the GHL contact.
+  // Where the signup came from (e.g. the footer quick-capture), included in
+  // Emily's signup email.
   source?: string
-  tag?: string
   // Honeypot. Real users never fill this.
   company?: string
 }
@@ -32,11 +31,10 @@ const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 /**
  * Wait list intake.
  *
- * Emails the signup to Emily via Resend and best-effort creates a tagged GHL
- * contact so it lands in her pipeline. Both integrations read their secrets
- * from env (RESEND_API_KEY, WAITLIST_TO/FROM, GHL_API_KEY, GHL_LOCATION_ID).
- * If Resend is not configured or the send fails, we return a non-OK status so
- * the client can fall back to a plain mailto rather than silently losing a lead.
+ * Emails the signup to Emily via Resend, which reads its secrets from env
+ * (RESEND_API_KEY, WAITLIST_TO/FROM). If Resend is not configured or the
+ * send fails, we return a non-OK status so the client can fall back to a
+ * plain mailto rather than silently losing a lead.
  */
 export async function POST(req: Request): Promise<NextResponse> {
   let body: Payload
@@ -60,26 +58,12 @@ export async function POST(req: Request): Promise<NextResponse> {
   const location = clean(body.location, 200)
   const message = clean(body.message, 4000)
   const source = clean(body.source, 80)
-  const tag = clean(body.tag, 80)
 
   // A valid email is the only hard requirement. The full /contact form also
   // collects a name; the footer quick-capture sends email only.
   if (!EMAIL_RE.test(email)) {
     return NextResponse.json({ ok: false, error: 'invalid' }, { status: 422 })
   }
-
-  // Best-effort CRM sync. Never blocks the email or fails the request.
-  await createGhlContact({
-    name,
-    firstName,
-    lastName,
-    email,
-    church,
-    location,
-    message,
-    source,
-    tag,
-  }).catch(() => {})
 
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
@@ -123,45 +107,4 @@ export async function POST(req: Request): Promise<NextResponse> {
   }
 
   return NextResponse.json({ ok: true })
-}
-
-async function createGhlContact(p: {
-  name: string
-  firstName: string
-  lastName: string
-  email: string
-  church: string
-  location: string
-  message: string
-  source: string
-  tag: string
-}): Promise<void> {
-  const apiKey = process.env.GHL_API_KEY
-  const locationId = process.env.GHL_LOCATION_ID
-  if (!apiKey || !locationId) return
-
-  // Use the explicit first/last when the form provided them; otherwise split
-  // the single name field on whitespace.
-  const [splitFirst, ...splitRest] = p.name.split(/\s+/)
-  const firstName = p.firstName || splitFirst
-  const lastName = p.lastName || splitRest.join(' ')
-  const tags = ['wait-list-2026', ...(p.tag ? [p.tag] : [])]
-  await fetch('https://services.leadconnectorhq.com/contacts/', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      Version: '2021-07-28',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      locationId,
-      firstName: firstName || p.name || undefined,
-      lastName: lastName || undefined,
-      email: p.email,
-      companyName: p.church || undefined,
-      city: p.location || undefined,
-      source: p.source === 'footer' ? 'Website footer wait list' : 'Website wait list',
-      tags,
-    }),
-  })
 }

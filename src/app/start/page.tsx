@@ -6,10 +6,6 @@ import { EmilyAvatar } from '@/components/EmilyAvatar'
 import { Border } from '@/components/Border'
 import { buildMetadata } from '@/lib/seo'
 
-// GHL checkout URLs
-const MONTHLY_CHECKOUT_URL = 'https://go.createchurchmedia.com/monthly'
-const ANNUAL_CHECKOUT_URL = 'https://go.createchurchmedia.com/yearly'
-
 // noindex: this page is shared privately by Emily, not meant for public discovery
 export const metadata: Metadata = {
   ...buildMetadata({
@@ -35,7 +31,7 @@ export default function StartPage() {
             </h1>
             <p className="mt-6 text-lg text-neutral-600">
               Both plans give you the same access, same designer, same turnaround.
-              The annual plan saves you $2,400 compared to paying month to month.
+              The annual plan saves you $1,994 compared to paying month to month.
             </p>
           </FadeIn>
         </Container>
@@ -61,7 +57,7 @@ export default function StartPage() {
                 Cancel any time. No long-term commitment.
               </p>
               <a
-                href={MONTHLY_CHECKOUT_URL}
+                href="/api/checkout"
                 className="mt-8 block w-full rounded-md bg-neutral-950 px-6 py-4 text-center text-sm font-semibold text-white transition hover:bg-neutral-800"
               >
                 Subscribe monthly
@@ -71,19 +67,19 @@ export default function StartPage() {
             {/* Annual */}
             <FadeIn className="rounded-3xl bg-neutral-950 p-10 text-white shadow-xl ring-1 ring-neutral-900">
               <p className="font-display text-sm font-semibold uppercase tracking-wider text-[var(--color-cta)]">
-                Annual, save 20%
+                Annual &mdash; 2 months free
               </p>
               <p className="mt-6 flex items-baseline gap-x-2">
                 <span className="font-display text-6xl font-semibold tracking-tight text-white">
-                  $9,564
+                  $9,970
                 </span>
                 <span className="text-base text-neutral-400">/year</span>
               </p>
               <p className="mt-4 text-base text-neutral-300">
-                12 months upfront. That&rsquo;s $797/month. You save $2,400.
+                Billed as one payment, under $10,000. You save $1,994.
               </p>
               <a
-                href={ANNUAL_CHECKOUT_URL}
+                href="/api/checkout?plan=annual"
                 className="mt-8 block w-full rounded-md bg-[var(--color-cta)] px-6 py-4 text-center text-sm font-semibold text-neutral-950 transition hover:brightness-110"
               >
                 Subscribe annually

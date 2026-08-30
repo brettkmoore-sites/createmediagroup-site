@@ -5,9 +5,7 @@ import { FadeIn, FadeInStagger } from '@/components/FadeIn'
 import { PageIntro } from '@/components/PageIntro'
 import { Border } from '@/components/Border'
 import { buildMetadata } from '@/lib/seo'
-
-// GHL affiliate signup page URL -- update once go.createchurchmedia.com DNS propagates
-const AFFILIATE_SIGNUP_URL = 'https://go.createchurchmedia.com/affiliate'
+import { siteConfig } from '@/lib/site-config'
 
 export const metadata: Metadata = buildMetadata({
   title: 'Partner Program',
@@ -146,12 +144,12 @@ export default function PartnersPage() {
                   Ready to apply?
                 </h2>
                 <p className="mt-2 max-w-lg text-base leading-7 text-neutral-600">
-                  Fill out a short form and Emily will review your application
-                  within one business day.
+                  Email Emily directly and she&rsquo;ll review your
+                  application within one business day.
                 </p>
               </div>
               <a
-                href={AFFILIATE_SIGNUP_URL}
+                href={`mailto:${siteConfig.email}?subject=Partner%20program%20application`}
                 className="flex-shrink-0 rounded-full bg-neutral-950 px-8 py-4 text-sm font-semibold text-white transition hover:bg-neutral-800"
               >
                 Apply to become a partner
