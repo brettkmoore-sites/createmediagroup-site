@@ -103,6 +103,21 @@ export function SiteFooter() {
             </a>
           ) : null}
 
+          <p className="flex items-center gap-4 text-sm text-neutral-500">
+            <Link
+              href="/privacy"
+              className="transition hover:text-neutral-950 hover:underline underline-offset-4 decoration-[var(--color-cta)]"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              className="transition hover:text-neutral-950 hover:underline underline-offset-4 decoration-[var(--color-cta)]"
+            >
+              Terms
+            </Link>
+          </p>
+
           <p className="text-sm text-neutral-500">
             Made in {siteConfig.city}, {siteConfig.state}.
           </p>

@@ -12,13 +12,21 @@ export const metadata: Metadata = buildMetadata({
   path: '/subscribe/success',
 })
 
-export default function SubscribeSuccessPage() {
+type SearchParams = { session_id?: string }
+
+export default async function SubscribeSuccessPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>
+}) {
+  const { session_id: sessionId } = await searchParams
+
   return (
     <>
       <PageIntro eyebrow="Subscribed" title="You're in.">
         <p>
-          Thanks for subscribing. Emily will reach out at the email you used
-          at checkout to kick off onboarding.
+          Thanks for subscribing. Emily will be in touch within 24 hours to
+          get you set up.
         </p>
       </PageIntro>
 
@@ -35,7 +43,28 @@ export default function SubscribeSuccessPage() {
               </a>
               .
             </p>
+
+            {sessionId ? (
+              <p className="mt-6 border-t border-neutral-200 pt-6 text-base leading-7 text-neutral-600">
+                <a
+                  href={`/api/customer-portal?session_id=${encodeURIComponent(sessionId)}`}
+                  className="font-semibold text-neutral-950 underline underline-offset-4 decoration-[var(--color-cta)] hover:decoration-2"
+                >
+                  Manage your subscription
+                </a>{' '}
+                to update your card, view invoices, or cancel any time.
+              </p>
+            ) : null}
           </div>
+
+          <p className="mt-8 max-w-xl text-base text-neutral-600">
+            <a
+              href="/"
+              className="font-semibold text-neutral-950 underline underline-offset-4 decoration-[var(--color-cta)] hover:decoration-2"
+            >
+              Back to the homepage
+            </a>
+          </p>
         </FadeIn>
       </Container>
     </>

@@ -90,6 +90,39 @@ export default function SubscribePage() {
                 .
               </p>
             </Border>
+
+            <Border className="mt-10 pt-10">
+              <h2 className="font-display text-base font-semibold text-neutral-950">
+                Already subscribed?
+              </h2>
+              <p className="mt-6 text-base text-neutral-600">
+                Manage your subscription, update your card, view invoices, or
+                cancel any time.
+              </p>
+              <form
+                action="/api/customer-portal"
+                method="GET"
+                className="mt-4 flex flex-col gap-3 sm:flex-row"
+              >
+                <label htmlFor="portal-email" className="sr-only">
+                  Email used at checkout
+                </label>
+                <input
+                  id="portal-email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="you@yourchurch.org"
+                  className="w-full rounded-md border-0 px-4 py-2.5 text-sm text-neutral-950 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-400 focus:ring-2 focus:ring-inset focus:ring-neutral-950"
+                />
+                <button
+                  type="submit"
+                  className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-md bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-neutral-800"
+                >
+                  Manage subscription
+                </button>
+              </form>
+            </Border>
           </FadeIn>
         </div>
       </Container>
